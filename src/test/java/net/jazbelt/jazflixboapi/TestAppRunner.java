@@ -6,8 +6,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Component;
 
-import java.awt.desktop.SystemEventListener;
-
 @Component
 public class TestAppRunner implements CommandLineRunner {
 

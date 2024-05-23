@@ -1,7 +1,6 @@
 package net.jazbelt.jazflixboapi.controller;
 
 import net.jazbelt.jazflixboapi.domain.UserService;
-import net.jazbelt.jazflixboapi.error.UserNotFoundException;
 import net.jazbelt.jazflixboapi.model.entity.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

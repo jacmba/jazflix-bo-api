@@ -1,6 +1,8 @@
 package net.jazbelt.jazflixboapi.domain;
 
 import net.jazbelt.jazflixboapi.model.entity.User;
+import net.jazbelt.jazflixboapi.model.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -8,14 +10,22 @@ import java.util.Optional;
 
 @Service
 public class UserService implements IUserService {
+
+    private final UserRepository repository;
+
+    @Autowired
+    public UserService(UserRepository repository) {
+        this.repository = repository;
+    }
+
     @Override
     public Optional<User> retrieveUserDetails(String id) {
-        return Optional.empty();
+        return repository.findById(id);
     }
 
     @Override
     public List<User> retrieveAllUsers() {
-        return List.of();
+        return repository.findAll();
     }
 
     @Override

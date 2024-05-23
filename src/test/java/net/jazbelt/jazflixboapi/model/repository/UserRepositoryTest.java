@@ -82,4 +82,18 @@ class UserRepositoryTest {
         Optional<User> user = repository.findById("xyz789");
         assertTrue(user.isEmpty());
     }
+
+    @Test
+    void newUserWithNullIdShouldReturnAValidId() {
+        User input = new User(null, "jane@foo.bar", true);
+        User result = repository.save(input);
+
+        System.out.println("Created user: " + result);
+
+        assertNotNull(result);
+        assertNotNull(result.getId());
+        assertTrue(result.getId().length() > 1);
+        assertEquals("jane@foo.bar", result.getName());
+        assertTrue(result.getEnabled());
+    }
 }

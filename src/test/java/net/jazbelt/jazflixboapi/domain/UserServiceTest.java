@@ -1,5 +1,7 @@
 package net.jazbelt.jazflixboapi.domain;
 
+import net.jazbelt.jazflixboapi.error.UserIdMismatchException;
+import net.jazbelt.jazflixboapi.error.UserNotFoundException;
 import net.jazbelt.jazflixboapi.model.entity.User;
 import net.jazbelt.jazflixboapi.model.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -44,14 +46,20 @@ class UserServiceTest {
 
     @Test
     void retrieveUserDetails() {
-        Optional<User> possibleUser = service.retrieveUserDetails("abc123");
-        assertTrue(possibleUser.isPresent());
-
-        User user = possibleUser.get();
+        User user = service.retrieveUserDetails("abc123");
 
         assertEquals("abc123", user.getId());
         assertEquals("jdoe@foo.bar", user.getName());
         assertTrue(user.getEnabled());
+    }
+
+    @Test
+    void retrieveNonExistingUserShouldThrowException() {
+        Exception ex = assertThrows(UserNotFoundException.class, () -> {
+            service.retrieveUserDetails("aabbcc112233");
+        });
+
+        assertEquals("User [aabbcc112233] not found", ex.getMessage());
     }
 
     @Test
@@ -79,12 +87,8 @@ class UserServiceTest {
                 true
         );
 
-        Optional<User> result = service.createUser(input);
+        User user = service.createUser(input);
 
-        verify(repository).save(input);
-        assertTrue(result.isPresent());
-
-        User user = result.get();
         assertEquals("abc123", user.getId());
         assertEquals("jdoe@foo.bar", user.getName());
         assertTrue(user.getEnabled());
@@ -93,25 +97,48 @@ class UserServiceTest {
     @Test
     void updateUser() {
         User input = new User(
-                "abc1233",
+                "abc123",
                 "jdoe@foo.bar",
                 true
         );
 
-        Optional<User> result = service.updateUser("abc123", input);
+        User user = service.updateUser("abc123", input);
 
-        verify(repository).save(input);
-        assertTrue(result.isPresent());
-
-        User user = result.get();
         assertEquals("abc123", user.getId());
         assertEquals("jdoe@foo.bar", user.getName());
         assertTrue(user.getEnabled());
     }
 
     @Test
+    void updateUserWithMismatchIDShouldThrowException() {
+        Exception ex = assertThrows(UserIdMismatchException.class, () -> {
+            service.updateUser("abc123", new User("abc12", "jdoe@foo.bar", true));
+        });
+
+        assertEquals("Path and object user IDs do not match", ex.getMessage());
+    }
+
+    @Test
+    void updateUserWithNonExistingIdShouldThrowUserNotFoundException() {
+        Exception ex = assertThrows(UserNotFoundException.class, () -> {
+            service.updateUser("invalidId", new User("invalidId", "lorem@ipsum.com", true));
+        });
+
+        assertEquals("User [invalidId] not found", ex.getMessage());
+    }
+
+    @Test
     void deleteUser() {
         service.deleteUser("abc123");
         verify(repository).deleteById("abc123");
+    }
+
+    @Test
+    void deleteNonExistingUserShouldThrowUserNotFoundException() {
+        Exception ex = assertThrows(UserNotFoundException.class, () -> {
+            service.deleteUser("not_exists");
+        });
+
+        assertEquals("User [not_exists] not found", ex.getMessage());
     }
 }

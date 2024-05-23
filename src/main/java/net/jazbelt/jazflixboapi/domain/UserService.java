@@ -1,5 +1,7 @@
 package net.jazbelt.jazflixboapi.domain;
 
+import net.jazbelt.jazflixboapi.error.UserIdMismatchException;
+import net.jazbelt.jazflixboapi.error.UserNotFoundException;
 import net.jazbelt.jazflixboapi.model.entity.User;
 import net.jazbelt.jazflixboapi.model.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +21,14 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public Optional<User> retrieveUserDetails(String id) {
-        return repository.findById(id);
+    public User retrieveUserDetails(String id) {
+        Optional<User> user = repository.findById(id);
+
+        if (user.isEmpty()) {
+            throw new UserNotFoundException(id);
+        }
+
+        return user.get();
     }
 
     @Override
@@ -29,19 +37,24 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public Optional<User> createUser(User user) {
-        User result = repository.save(user);
-        return Optional.of(result);
+    public User createUser(User user) {
+        return repository.save(user);
     }
 
     @Override
-    public Optional<User> updateUser(String id, User user) {
-        User result = repository.save(user);
-        return Optional.of(result);
+    public User updateUser(String id, User user) {
+        if (!id.equals(user.getId())) {
+            throw new UserIdMismatchException();
+        }
+
+        retrieveUserDetails(id);
+
+        return repository.save(user);
     }
 
     @Override
     public void deleteUser(String id) {
+        retrieveUserDetails(id);
         repository.deleteById(id);
     }
 }

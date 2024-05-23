@@ -1,8 +1,10 @@
 package net.jazbelt.jazflixboapi.controller;
 
 import jakarta.validation.Valid;
+import net.jazbelt.jazflixboapi.domain.IUserService;
 import net.jazbelt.jazflixboapi.error.NotImplementedException;
 import net.jazbelt.jazflixboapi.model.entity.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,6 +13,13 @@ import java.util.List;
 @RestController
 @RequestMapping("/user")
 public class UserController {
+
+    private final IUserService service;
+
+    @Autowired
+    public UserController(IUserService service) {
+        this.service = service;
+    }
 
     @GetMapping
     public List<User> getUsers() {

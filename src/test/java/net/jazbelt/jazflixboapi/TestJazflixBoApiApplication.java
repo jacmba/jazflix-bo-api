@@ -19,5 +19,4 @@ public class TestJazflixBoApiApplication {
 	public static void main(String[] args) {
 		SpringApplication.from(JazflixBoApiApplication::main).with(TestJazflixBoApiApplication.class).run(args);
 	}
-
 }

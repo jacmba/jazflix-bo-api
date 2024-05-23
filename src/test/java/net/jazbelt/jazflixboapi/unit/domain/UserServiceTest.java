@@ -1,5 +1,7 @@
-package net.jazbelt.jazflixboapi.domain;
+package net.jazbelt.jazflixboapi.unit.domain;
 
+import net.jazbelt.jazflixboapi.domain.IUserService;
+import net.jazbelt.jazflixboapi.domain.UserService;
 import net.jazbelt.jazflixboapi.error.UserIdMismatchException;
 import net.jazbelt.jazflixboapi.error.UserNotFoundException;
 import net.jazbelt.jazflixboapi.model.entity.User;

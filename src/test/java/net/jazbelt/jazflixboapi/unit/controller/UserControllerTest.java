@@ -1,5 +1,6 @@
-package net.jazbelt.jazflixboapi.controller;
+package net.jazbelt.jazflixboapi.unit.controller;
 
+import net.jazbelt.jazflixboapi.controller.UserController;
 import net.jazbelt.jazflixboapi.domain.UserService;
 import net.jazbelt.jazflixboapi.model.entity.User;
 import org.junit.jupiter.api.BeforeEach;

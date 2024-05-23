@@ -1,6 +1,7 @@
-package net.jazbelt.jazflixboapi.model.repository;
+package net.jazbelt.jazflixboapi.integration.repository;
 
 import net.jazbelt.jazflixboapi.model.entity.User;
+import net.jazbelt.jazflixboapi.model.repository.UserRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

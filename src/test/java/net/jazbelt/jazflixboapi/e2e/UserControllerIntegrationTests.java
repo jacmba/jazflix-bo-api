@@ -1,4 +1,4 @@
-package net.jazbelt.jazflixboapi.integration;
+package net.jazbelt.jazflixboapi.e2e;
 
 import net.jazbelt.jazflixboapi.model.entity.User;
 import net.jazbelt.jazflixboapi.model.repository.UserRepository;

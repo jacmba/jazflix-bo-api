@@ -20,20 +20,26 @@ class UserServiceTest {
 
     IUserService service;
 
+    @Mock UserRepository repository;
+
     @BeforeEach
-    void setUp(@Mock UserRepository repository) {
+    void setUp() {
         service = new UserService(repository);
 
-        lenient().when(repository.findAll()).thenReturn(
-                Arrays.asList(
-                        new User("abc123", "jdoe@foo.bar", true),
-                        new User("xyz456", "jackie@foo.bar", false)
-                )
-        );
+        User john = new User("abc123", "jdoe@foo.bar", true);
+        User jack = new User("xyz456", "jackie@foo.bar", false);
 
-        lenient().when(repository.findById(anyString())).thenReturn(Optional.empty());
-        lenient().when(repository.findById("abc123")).thenReturn(Optional.of(new User("abc123", "jdoe@foo.bar", true)));
-        lenient().when(repository.findById("xyz456")).thenReturn(Optional.of(new User("xyz456", "jackie@foo.bar", false)));
+        lenient().when(repository.findAll()).thenReturn(Arrays.asList(john, jack));
+
+        lenient().when(repository.findById(anyString()))
+                .thenReturn(Optional.empty());
+        lenient().when(repository.findById("abc123"))
+                .thenReturn(Optional.of(john));
+        lenient().when(repository.findById("xyz456"))
+                .thenReturn(Optional.of(john));
+
+        lenient().when(repository.save(any(User.class)))
+                .thenReturn(john);
     }
 
     @Test
@@ -66,10 +72,46 @@ class UserServiceTest {
     }
 
     @Test
+    void createUser() {
+        User input = new User(
+                null,
+                "jdoe@foo.bar",
+                true
+        );
+
+        Optional<User> result = service.createUser(input);
+
+        verify(repository).save(input);
+        assertTrue(result.isPresent());
+
+        User user = result.get();
+        assertEquals("abc123", user.getId());
+        assertEquals("jdoe@foo.bar", user.getName());
+        assertTrue(user.getEnabled());
+    }
+
+    @Test
     void updateUser() {
+        User input = new User(
+                "abc1233",
+                "jdoe@foo.bar",
+                true
+        );
+
+        Optional<User> result = service.updateUser("abc123", input);
+
+        verify(repository).save(input);
+        assertTrue(result.isPresent());
+
+        User user = result.get();
+        assertEquals("abc123", user.getId());
+        assertEquals("jdoe@foo.bar", user.getName());
+        assertTrue(user.getEnabled());
     }
 
     @Test
     void deleteUser() {
+        service.deleteUser("abc123");
+        verify(repository).deleteById("abc123");
     }
 }

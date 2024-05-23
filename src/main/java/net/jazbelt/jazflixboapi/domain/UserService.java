@@ -30,16 +30,18 @@ public class UserService implements IUserService {
 
     @Override
     public Optional<User> createUser(User user) {
-        return Optional.empty();
+        User result = repository.save(user);
+        return Optional.of(result);
     }
 
     @Override
     public Optional<User> updateUser(String id, User user) {
-        return Optional.empty();
+        User result = repository.save(user);
+        return Optional.of(result);
     }
 
     @Override
     public void deleteUser(String id) {
-
+        repository.deleteById(id);
     }
 }

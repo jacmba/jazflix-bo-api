@@ -2,7 +2,6 @@ package net.jazbelt.jazflixboapi.controller;
 
 import jakarta.validation.Valid;
 import net.jazbelt.jazflixboapi.domain.IUserService;
-import net.jazbelt.jazflixboapi.error.NotImplementedException;
 import net.jazbelt.jazflixboapi.model.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,29 +22,29 @@ public class UserController {
 
     @GetMapping
     public List<User> getUsers() {
-        throw new NotImplementedException();
+        return service.retrieveAllUsers();
     }
 
     @GetMapping("{id}")
     public User getUser(@PathVariable("id") String id) {
-        throw new NotImplementedException();
+        return service.retrieveUserDetails(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public User postCreateUser(@RequestBody @Valid User user) {
-        throw new NotImplementedException();
+        return service.createUser(user);
     }
 
     @PutMapping("{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public User putUpdateUser(@PathVariable("id") String id, @RequestBody @Valid User user) {
-        throw new NotImplementedException();
+        return service.updateUser(id, user);
     }
 
     @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteUser(@PathVariable("id") String id) {
-        throw new NotImplementedException();
+        service.deleteUser(id);
     }
 }

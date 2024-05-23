@@ -21,6 +21,7 @@ public class User {
     private String id;
 
     @NotBlank
+    @NotNull
     @Email
     private String name;
 

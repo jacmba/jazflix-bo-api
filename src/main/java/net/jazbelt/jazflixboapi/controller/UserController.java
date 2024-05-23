@@ -38,7 +38,7 @@ public class UserController {
 
     @PutMapping("{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public User putUpdateUser(@PathVariable("id") String id, @RequestBody @Valid User user) {
+    public User putUpdateUser(@PathVariable("id") String id, @Valid @RequestBody User user) {
         return service.updateUser(id, user);
     }
 

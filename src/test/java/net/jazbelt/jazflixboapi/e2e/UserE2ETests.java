@@ -6,6 +6,7 @@ import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
@@ -44,7 +45,7 @@ public class UserE2ETests {
 
     @Test
     @Order(1)
-    void getUsersShouldReturnAllUsers() throws Exception {
+    void getUsersShouldReturnAllUsers() {
         User[] users = restTemplate.getForObject(baseUri, User[].class);
         assertNotNull(users);
         assertEquals(3, users.length);
@@ -87,17 +88,60 @@ public class UserE2ETests {
 
         User result = restTemplate.postForObject(baseUri, user, User.class);
 
-        System.out.println("Created user: " + result);
+        long total = userRepository.count();
 
         assertNotNull(result);
         assertNotNull(result.getId());
         assertTrue(result.getId().length() > 1);
         assertEquals("maria@foo.bar", result.getName());
         assertTrue(result.getEnabled());
+        assertEquals(4L, total);
     }
 
     @Test
     @Order(4)
+    void createNewUserWithNullEmailShouldReturnValidationBadRequestError() {
+        HttpClientErrorException.BadRequest ex = assertThrows(HttpClientErrorException.BadRequest.class, () -> {
+            User user = new User(null, null, true);
+            restTemplate.postForObject(baseUri, user, User.class);
+        });
+
+        long total = userRepository.count();
+
+        assertEquals(HttpStatus.BAD_REQUEST, ex.getStatusCode());
+        assertEquals(4L, total);
+    }
+
+    @Test
+    @Order(5)
+    void createNewUserWithNullEnabledShouldReturnValidationBadRequestError() {
+        HttpClientErrorException.BadRequest ex = assertThrows(HttpClientErrorException.BadRequest.class, () -> {
+            User user = new User(null, "test@lorem.ipsum", null);
+            restTemplate.postForObject(baseUri, user, User.class);
+        });
+
+        long total = userRepository.count();
+
+        assertEquals(HttpStatus.BAD_REQUEST, ex.getStatusCode());
+        assertEquals(4L, total);
+    }
+
+    @Test
+    @Order(6)
+    void createNewUserWithInvalidEmailShouldReturnValidationBadRequestError() {
+        HttpClientErrorException.BadRequest ex = assertThrows(HttpClientErrorException.BadRequest.class, () -> {
+            User user = new User(null, "my_mail", true);
+            restTemplate.postForObject(baseUri, user, User.class);
+        });
+
+        long total = userRepository.count();
+
+        assertEquals(HttpStatus.BAD_REQUEST, ex.getStatusCode());
+        assertEquals(4L, total);
+    }
+
+    @Test
+    @Order(10)
     void updateJohnDoeShouldReflectChanges() {
         User user = new User(userId, "john@foo.bar", false);
 
@@ -112,7 +156,7 @@ public class UserE2ETests {
     }
 
     @Test
-    @Order(5)
+    @Order(20)
     void deleteJohnUserSouldSuccessfullyDeleteFromDb() {
         restTemplate.delete(baseUri + "/" + userId);
 
@@ -145,6 +189,36 @@ public class UserE2ETests {
             User user = new User("abc", "test@lorem.ipsum", true);
             restTemplate.put(baseUri + "/abc", user);
         });
+    }
+
+    @Test
+    void updateUserWithNullEmailShouldThrowValidationBadRequestException() {
+        HttpClientErrorException.BadRequest ex = assertThrows(HttpClientErrorException.BadRequest.class, () -> {
+            User user = new User("abc", null, true);
+            restTemplate.put(baseUri + "/abc", user);
+        });
+
+        assertEquals(HttpStatus.BAD_REQUEST, ex.getStatusCode());
+    }
+
+    @Test
+    void updateUserWithNullEnabledShouldThrowValidationBadRequestException() {
+        HttpClientErrorException.BadRequest ex = assertThrows(HttpClientErrorException.BadRequest.class, () -> {
+            User user = new User("abc", "test@foo.bar", null);
+            restTemplate.put(baseUri + "/abc", user);
+        });
+
+        assertEquals(HttpStatus.BAD_REQUEST, ex.getStatusCode());
+    }
+
+    @Test
+    void updateUserWithInvalidEmailShouldThrowValidationBadRequestException() {
+        HttpClientErrorException.BadRequest ex = assertThrows(HttpClientErrorException.BadRequest.class, () -> {
+            User user = new User("abc", "my_email", true);
+            restTemplate.put(baseUri + "/abc", user);
+        });
+
+        assertEquals(HttpStatus.BAD_REQUEST, ex.getStatusCode());
     }
 
     @Test

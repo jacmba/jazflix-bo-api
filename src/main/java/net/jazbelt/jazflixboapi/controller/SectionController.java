@@ -1,7 +1,9 @@
 package net.jazbelt.jazflixboapi.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import net.jazbelt.jazflixboapi.domain.ISectionService;
 import net.jazbelt.jazflixboapi.model.entity.Section;
@@ -13,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/section")
+@Tag(name = "Sections", description = "CRUD operations for movie sections")
 public class SectionController {
 
     private final ISectionService service;
@@ -23,6 +26,7 @@ public class SectionController {
     }
 
     @GetMapping
+    @Operation(summary = "Get all sections", description = "Retrieve full list of sections")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Return list of sections")
     })
@@ -31,6 +35,7 @@ public class SectionController {
     }
 
     @GetMapping("{id}")
+    @Operation(summary = "Get single section", description = "Retrieve specific section by given ID")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Return section object"),
             @ApiResponse(responseCode = "404", description = "Section not found")
@@ -40,6 +45,7 @@ public class SectionController {
     }
 
     @PostMapping
+    @Operation(summary = "Create new section", description = "Post new section info")
     @ResponseStatus(HttpStatus.CREATED)
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "New section successfully created"),
@@ -50,6 +56,7 @@ public class SectionController {
     }
 
     @PutMapping("{id}")
+    @Operation(summary = "Update section", description = "Modify existing section by given ID")
     @ResponseStatus(HttpStatus.ACCEPTED)
     @ApiResponses({
             @ApiResponse(responseCode = "202", description = "Section successfully updated"),
@@ -61,6 +68,7 @@ public class SectionController {
     }
 
     @DeleteMapping("{id}")
+    @Operation(summary = "Delete section", description = "Remove section by given ID")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ApiResponses({
             @ApiResponse(responseCode = "204", description = "Section successfully deleted"),

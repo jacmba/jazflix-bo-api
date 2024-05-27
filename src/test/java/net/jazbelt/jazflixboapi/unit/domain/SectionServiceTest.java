@@ -2,7 +2,6 @@ package net.jazbelt.jazflixboapi.unit.domain;
 
 import net.jazbelt.jazflixboapi.domain.ISectionService;
 import net.jazbelt.jazflixboapi.domain.SectionService;
-import net.jazbelt.jazflixboapi.error.SectionIdMismatchException;
 import net.jazbelt.jazflixboapi.error.SectionNotFoundException;
 import net.jazbelt.jazflixboapi.model.entity.Section;
 import net.jazbelt.jazflixboapi.model.repository.SectionRepository;
@@ -90,9 +89,9 @@ public class SectionServiceTest {
 
     @Test
     void retrieveNonExistingSectionShouldThrowNotFoundException() {
-        SectionNotFoundException ex = assertThrows(SectionNotFoundException.class, () -> {
-            service.retrieveSection("x");
-        });
+        SectionNotFoundException ex = assertThrows(SectionNotFoundException.class, () ->
+            service.retrieveSection("x")
+        );
 
         assertEquals("Section [x] not found", ex.getMessage());
     }
@@ -128,9 +127,9 @@ public class SectionServiceTest {
 
     @Test
     void updateNonExistingSectionShouldThrowNotFoundException() {
-        SectionNotFoundException ex = assertThrows(SectionNotFoundException.class, () -> {
-            service.updateSection("x", new Section("x", "test", "Test", "/test", 1));
-        });
+        SectionNotFoundException ex = assertThrows(SectionNotFoundException.class, () ->
+            service.updateSection("x", new Section("x", "test", "Test", "/test", 1))
+        );
 
         assertEquals("Section [x] not found", ex.getMessage());
     }
@@ -144,9 +143,9 @@ public class SectionServiceTest {
 
     @Test
     void deleteNonExistingSectionShouldThrowNotFoundException() {
-        SectionNotFoundException ex = assertThrows(SectionNotFoundException.class, () -> {
-            service.deleteSection("x");
-        });
+        SectionNotFoundException ex = assertThrows(SectionNotFoundException.class, () ->
+            service.deleteSection("x")
+        );
 
         assertEquals("Section [x] not found", ex.getMessage());
     }

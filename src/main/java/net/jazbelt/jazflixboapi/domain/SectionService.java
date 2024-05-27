@@ -1,6 +1,5 @@
 package net.jazbelt.jazflixboapi.domain;
 
-import net.jazbelt.jazflixboapi.error.SectionIdMismatchException;
 import net.jazbelt.jazflixboapi.error.SectionNotFoundException;
 import net.jazbelt.jazflixboapi.model.entity.Section;
 import net.jazbelt.jazflixboapi.model.repository.SectionRepository;

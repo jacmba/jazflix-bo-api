@@ -114,19 +114,16 @@ public class SectionServiceTest {
     @Test
     void updateSectionShouldReturnModifiedDocument() {
         Section section = new Section("1", "icon-home", "Home", "/", 1);
-        Section updatedSection = service.updateSection("1", section);
+        service.updateSection("1", section);
 
         verify(repository).save(section);
-        assertEquals(section, updatedSection);
     }
 
     @Test
-    void updateSectionShouldThrowIDMismatchException() {
-        SectionIdMismatchException ex = assertThrows(SectionIdMismatchException.class, () -> {
-            service.updateSection("2", new Section("1", "test", "Test", "/test", 1));
-        });
+    void updateSectionShouldUsePathId() {
+        service.updateSection("1", new Section("2", "test", "Test", "/test", 1));
 
-        assertEquals("Section IDs do not match", ex.getMessage());
+        verify(repository).save(new Section("1", "test", "Test", "/test", 1));
     }
 
     @Test

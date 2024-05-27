@@ -56,9 +56,9 @@ class UserServiceTest {
 
     @Test
     void retrieveNonExistingUserShouldThrowException() {
-        Exception ex = assertThrows(UserNotFoundException.class, () -> {
-            service.retrieveUserDetails("aabbcc112233");
-        });
+        Exception ex = assertThrows(UserNotFoundException.class, () ->
+            service.retrieveUserDetails("aabbcc112233")
+        );
 
         assertEquals("User [aabbcc112233] not found", ex.getMessage());
     }
@@ -117,9 +117,9 @@ class UserServiceTest {
 
     @Test
     void updateUserWithNonExistingIdShouldThrowUserNotFoundException() {
-        Exception ex = assertThrows(UserNotFoundException.class, () -> {
-            service.updateUser("invalidId", new User("invalidId", "lorem@ipsum.com", true));
-        });
+        Exception ex = assertThrows(UserNotFoundException.class, () ->
+            service.updateUser("invalidId", new User("invalidId", "lorem@ipsum.com", true))
+        );
 
         assertEquals("User [invalidId] not found", ex.getMessage());
     }
@@ -132,9 +132,9 @@ class UserServiceTest {
 
     @Test
     void deleteNonExistingUserShouldThrowUserNotFoundException() {
-        Exception ex = assertThrows(UserNotFoundException.class, () -> {
-            service.deleteUser("not_exists");
-        });
+        Exception ex = assertThrows(UserNotFoundException.class, () ->
+            service.deleteUser("not_exists")
+        );
 
         assertEquals("User [not_exists] not found", ex.getMessage());
     }

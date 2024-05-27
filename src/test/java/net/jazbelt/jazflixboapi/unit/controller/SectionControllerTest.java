@@ -34,7 +34,6 @@ public class SectionControllerTest {
         lenient().when(service.createSection(any(Section.class))).thenReturn(home);
         lenient().when(service.retrieveAllSections()).thenReturn(Arrays.asList(home, movies, series));
         lenient().when(service.retrieveSection(anyString())).thenReturn(home);
-        lenient().when(service.updateSection(anyString(), any(Section.class))).thenReturn(home);
     }
 
     @Test
@@ -99,19 +98,12 @@ public class SectionControllerTest {
     }
 
     @Test
-    public void putUpdateSectionShouldReturnChangedSection() {
+    public void putUpdateSectionShouldInvokeServiceMethod() {
         Section input = new Section("1", "icon-home", "Home", "/", 1);
 
-        Section section = controller.putUpdateSection("1", input);
+        controller.putUpdateSection("1", input);
 
         verify(service).updateSection("1", input);
-
-        assertNotNull(section);
-        assertEquals("1", section.getId());
-        assertEquals("icon-home", section.getIcon());
-        assertEquals("Home", section.getTitle());
-        assertEquals("/", section.getTo());
-        assertEquals(1, section.getOrder());
     }
 
     @Test

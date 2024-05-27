@@ -42,14 +42,10 @@ public class SectionService implements ISectionService {
     }
 
     @Override
-    public Section updateSection(String id, Section section) {
-        if (!id.equals(section.getId())) {
-            throw new SectionIdMismatchException();
-        }
-
+    public void updateSection(String id, Section section) {
+        section.setId(id);
         retrieveSection(id);
-
-        return repository.save(section);
+        repository.save(section);
     }
 
     @Override

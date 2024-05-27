@@ -14,7 +14,7 @@ public interface ISectionService {
 
     Section retrieveSection(String id);
 
-    Section updateSection(String id, Section section);
+    void updateSection(String id, Section section);
 
     void deleteSection(String id);
 }

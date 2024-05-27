@@ -57,14 +57,14 @@ public class SectionController {
 
     @PutMapping("{id}")
     @Operation(summary = "Update section", description = "Modify existing section by given ID")
-    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @ApiResponses({
-            @ApiResponse(responseCode = "202", description = "Section successfully updated"),
+            @ApiResponse(responseCode = "204", description = "Section successfully updated"),
             @ApiResponse(responseCode = "409", description = "Path and object IDs do not match"),
             @ApiResponse(responseCode = "404", description = "Section not found")
     })
-    public Section putUpdateSection(@PathVariable("id") String id, @Valid @RequestBody Section section) {
-        return service.updateSection(id, section);
+    public void putUpdateSection(@PathVariable("id") String id, @Valid @RequestBody Section section) {
+        service.updateSection(id, section);
     }
 
     @DeleteMapping("{id}")

@@ -95,9 +95,9 @@ public class SectionE2ETests {
     @Test
     @Order(3)
     void getNonExistingSectionSouldReturnNotFoundError() {
-        HttpClientErrorException.NotFound ex = assertThrows(HttpClientErrorException.NotFound.class, () -> {
-            restTemplate.getForObject(baseUri + "/xxyyzz", Section.class);
-        });
+        HttpClientErrorException.NotFound ex = assertThrows(HttpClientErrorException.NotFound.class, () ->
+            restTemplate.getForObject(baseUri + "/xxyyzz", Section.class)
+        );
 
         assertEquals(HttpStatus.NOT_FOUND, ex.getStatusCode());
     }
@@ -198,17 +198,6 @@ public class SectionE2ETests {
     }
 
     @Test
-    @Order(11)
-    void putUpdateSectionWithDifferentIdShouldReturnConflictError() {
-        HttpClientErrorException.Conflict ex = assertThrows(HttpClientErrorException.Conflict.class, () -> {
-            Section input = new Section("123", "test", "Test", "/test", 999);
-            restTemplate.put(baseUri + "/1234", input);
-        });
-
-        assertEquals(HttpStatus.CONFLICT, ex.getStatusCode());
-    }
-
-    @Test
     @Order(12)
     void putUpdateNonExistingSectionShouldReturnNotFoundError() {
         HttpClientErrorException.NotFound ex = assertThrows(HttpClientErrorException.NotFound.class, () -> {
@@ -278,9 +267,9 @@ public class SectionE2ETests {
     @Test
     @Order(21)
     void deleteNonExistingSectionShouldReturnNotFoundError() {
-        HttpClientErrorException.NotFound ex = assertThrows(HttpClientErrorException.NotFound.class, () -> {
-            restTemplate.delete(baseUri + "/12341123asdlfkjads");
-        });
+        HttpClientErrorException.NotFound ex = assertThrows(HttpClientErrorException.NotFound.class, () ->
+            restTemplate.delete(baseUri + "/12341123asdlfkjads")
+        );
 
         long total = sectionRepository.count();
 

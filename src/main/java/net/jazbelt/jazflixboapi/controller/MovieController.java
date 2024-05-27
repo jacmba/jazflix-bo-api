@@ -6,8 +6,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import net.jazbelt.jazflixboapi.error.NotImplementedException;
+import net.jazbelt.jazflixboapi.domain.MovieService;
 import net.jazbelt.jazflixboapi.model.entity.Movie;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,13 +19,20 @@ import java.util.List;
 @Tag(name = "Movies", description = "CRUD operations for movies")
 public class MovieController {
 
+    private final MovieService service;
+
+    @Autowired
+    public MovieController(MovieService service) {
+        this.service = service;
+    }
+
     @GetMapping
     @Operation(summary = "Get all movies", description = "Return full list of movies")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Return list of movies")
     })
     public List<Movie> getMovies() {
-        throw new NotImplementedException();
+        return service.retrieveAllMovies();
     }
 
     @GetMapping("{id}")
@@ -38,7 +46,7 @@ public class MovieController {
             @Parameter(required = true, description = "Movie unique ID")
             String id
     ) {
-        throw new NotImplementedException();
+        return service.retrieveSingleMovie(id);
     }
 
     @PostMapping
@@ -49,7 +57,7 @@ public class MovieController {
     })
     @ResponseStatus(HttpStatus.CREATED)
     public Movie postNewMovie(@Valid @RequestBody Movie movie) {
-        throw new NotImplementedException();
+        return service.createMovie(movie);
     }
 
     @PutMapping("{id}")
@@ -61,7 +69,7 @@ public class MovieController {
     })
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void putMovie(@PathVariable("id") String id, @Valid @RequestBody Movie movie) {
-        throw new NotImplementedException();
+        service.updateMovie(id, movie);
     }
 
     @DeleteMapping("{id}")
@@ -71,7 +79,7 @@ public class MovieController {
             @ApiResponse(responseCode = "404", description = "Movie not found")
     })
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteMovie(String id) {
-        throw new NotImplementedException();
+    public void deleteMovie(@PathVariable("id") String id) {
+        service.deleteMovie(id);
     }
 }

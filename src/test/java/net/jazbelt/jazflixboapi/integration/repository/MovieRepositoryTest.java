@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class MovieRepositoryTest {
 
     @Container
-    static MongoDBContainer container = new MongoDBContainer("mongo:latest");
+    static final MongoDBContainer container = new MongoDBContainer("mongo:latest");
 
     @DynamicPropertySource
     static void setProperties(DynamicPropertyRegistry registry) {

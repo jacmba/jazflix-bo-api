@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class SectionRepositoryTest {
 
     @Container
-    static MongoDBContainer mongoDBContainer = new MongoDBContainer("mongo:latest");
+    static final MongoDBContainer mongoDBContainer = new MongoDBContainer("mongo:latest");
 
     @DynamicPropertySource
     static void setProperties(DynamicPropertyRegistry registry) {

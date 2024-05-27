@@ -15,7 +15,7 @@ public class TestAppRunner implements CommandLineRunner {
     private MongoTemplate mongoTemplate;
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
         // Cleanup collections
         mongoTemplate.dropCollection("users");
         mongoTemplate.dropCollection("sections");

@@ -53,7 +53,7 @@ public class UserE2ETests {
     }
 
     @Test
-    void portShouldbeHigherThan1000() {
+    void portShouldBeHigherThan1000() {
         assertTrue(port > 1000);
     }
 
@@ -171,7 +171,7 @@ public class UserE2ETests {
 
     @Test
     @Order(20)
-    void deleteJohnUserSouldSuccessfullyDeleteFromDb() {
+    void deleteJohnUserShouldSuccessfullyDeleteFromDb() {
         restTemplate.delete(baseUri + "/" + userId);
 
         List<User> allUsers = userRepository.findAll();
@@ -184,17 +184,9 @@ public class UserE2ETests {
 
     @Test
     void getNotExistingUserShouldThrowNotFoundException() {
-        assertThrows(HttpClientErrorException.NotFound.class, () -> {
-            restTemplate.getForObject(baseUri + "/xxyyzz", User.class);
-        });
-    }
-
-    @Test
-    void updateUserWithIdMismatchShouldThrowConflictException() {
-        assertThrows(HttpClientErrorException.Conflict.class, () -> {
-            User user = new User("aabbcc", "test@lorem.ipsum", true);
-            restTemplate.put(baseUri + "/abc", user);
-        });
+        assertThrows(HttpClientErrorException.NotFound.class, () ->
+            restTemplate.getForObject(baseUri + "/xxyyzz", User.class)
+        );
     }
 
     @Test
@@ -237,8 +229,8 @@ public class UserE2ETests {
 
     @Test
     void deleteNonExistingUserShouldThrowNotFoundException() {
-        assertThrows(HttpClientErrorException.NotFound.class, () -> {
-            restTemplate.delete(baseUri + "abc");
-        });
+        assertThrows(HttpClientErrorException.NotFound.class, () ->
+            restTemplate.delete(baseUri + "abc")
+        );
     }
 }

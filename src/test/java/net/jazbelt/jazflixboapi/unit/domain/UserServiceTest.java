@@ -2,7 +2,6 @@ package net.jazbelt.jazflixboapi.unit.domain;
 
 import net.jazbelt.jazflixboapi.domain.IUserService;
 import net.jazbelt.jazflixboapi.domain.UserService;
-import net.jazbelt.jazflixboapi.error.UserIdMismatchException;
 import net.jazbelt.jazflixboapi.error.UserNotFoundException;
 import net.jazbelt.jazflixboapi.model.entity.User;
 import net.jazbelt.jazflixboapi.model.repository.UserRepository;
@@ -104,20 +103,16 @@ class UserServiceTest {
                 true
         );
 
-        User user = service.updateUser("abc123", input);
+        service.updateUser("abc123", input);
 
-        assertEquals("abc123", user.getId());
-        assertEquals("jdoe@foo.bar", user.getName());
-        assertTrue(user.getEnabled());
+        verify(repository).save(input);
     }
 
     @Test
-    void updateUserWithMismatchIDShouldThrowException() {
-        Exception ex = assertThrows(UserIdMismatchException.class, () -> {
-            service.updateUser("abc123", new User("abc12", "jdoe@foo.bar", true));
-        });
+    void updateUserWithMismatchIDShouldUsePathId() {
+        service.updateUser("abc123", new User("abc12", "jdoe@foo.bar", true));
 
-        assertEquals("Path and object user IDs do not match", ex.getMessage());
+        verify(repository).save(new User("abc123", "jdoe@foo.bar", true));
     }
 
     @Test

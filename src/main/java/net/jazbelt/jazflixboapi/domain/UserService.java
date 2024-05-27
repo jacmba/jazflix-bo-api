@@ -1,6 +1,5 @@
 package net.jazbelt.jazflixboapi.domain;
 
-import net.jazbelt.jazflixboapi.error.UserIdMismatchException;
 import net.jazbelt.jazflixboapi.error.UserNotFoundException;
 import net.jazbelt.jazflixboapi.model.entity.User;
 import net.jazbelt.jazflixboapi.model.repository.UserRepository;
@@ -42,14 +41,10 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public User updateUser(String id, User user) {
-        if (!id.equals(user.getId())) {
-            throw new UserIdMismatchException();
-        }
-
+    public void updateUser(String id, User user) {
+        user.setId(id);
         retrieveUserDetails(id);
-
-        return repository.save(user);
+        repository.save(user);
     }
 
     @Override

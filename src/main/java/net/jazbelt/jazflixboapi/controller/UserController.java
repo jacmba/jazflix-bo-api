@@ -57,15 +57,15 @@ public class UserController {
 
     @PutMapping("{id}")
     @Operation(summary = "Update user", description = "Put modified user info")
-    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @ApiResponses({
-            @ApiResponse(responseCode = "202", description = "User successfully updated"),
+            @ApiResponse(responseCode = "204", description = "User successfully updated"),
             @ApiResponse(responseCode = "400", description = "Validation error"),
             @ApiResponse(responseCode = "404", description = "User not found"),
             @ApiResponse(responseCode = "409", description = "Path and object user IDs do not match")
     })
-    public User putUpdateUser(@PathVariable("id") String id, @Valid @RequestBody User user) {
-        return service.updateUser(id, user);
+    public void putUpdateUser(@PathVariable("id") String id, @Valid @RequestBody User user) {
+        service.updateUser(id, user);
     }
 
     @DeleteMapping("{id}")

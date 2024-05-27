@@ -35,7 +35,6 @@ class UserControllerTest {
         lenient().when(userService.retrieveUserDetails("abc123")).thenReturn(john);
         lenient().when(userService.retrieveUserDetails("xyz456")).thenReturn(jack);
         lenient().when(userService.createUser(any(User.class))).thenReturn(foo);
-        lenient().when(userService.updateUser(anyString(), any(User.class))).thenReturn(foo);
     }
 
     @Test
@@ -83,13 +82,9 @@ class UserControllerTest {
     @Test
     void putUpdateUser() {
         User input = new User("aabbcc", "foo@bar", true);
-        User user = controller.putUpdateUser("aabbcc", input);
+        controller.putUpdateUser("aabbcc", input);
 
         verify(userService).updateUser("aabbcc", input);
-
-        assertEquals("aabbcc", user.getId());
-        assertEquals("foo@bar", user.getName());
-        assertTrue(user.getEnabled());
     }
 
     @Test
